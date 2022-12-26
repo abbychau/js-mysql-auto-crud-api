@@ -1,0 +1,22 @@
+{
+    "name": "js-mysql-auto-crud-api",
+    "version": "1.0.0",
+    "description": "A Node.js API server that can auto adapt to any MySQL database schema.",
+    "main": "index.js",
+    "type": "module",
+    "scripts": {
+      "start": "node index.js",
+      "test": "jest"
+    },
+    "dependencies": {
+      "body-parser": "^1.19.0",
+      "express": "^4.17.1",
+      "mysql2": "^2.1.0"
+    },
+    "devDependencies": {
+      "jest": "^26.6.2",
+      "supertest": "^4.0.2"
+    },
+    "author": "Abby Chau",
+    "license": "MIT"
+}
