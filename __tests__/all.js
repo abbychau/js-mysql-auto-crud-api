@@ -1,23 +1,21 @@
-const request = require('supertest');
-const app = require('../index');
-const mysql = require('mysql2/promise');
+//import mysql from 'mysql2';
+import request from 'supertest';
+import { createConnection } from 'mysql-mock';
 
-const { MYSQL_HOST, MYSQL_USER, MYSQL_PASSWORD, MYSQL_DATABASE } = process.env;
+import app from '../index';
 
 describe('API routes', () => {
   let connection;
+  let server;
 
-  beforeAll(async () => {
-    connection = await mysql.createConnection({
-      host: MYSQL_HOST,
-      user: MYSQL_USER,
-      password: MYSQL_PASSWORD,
-      database: MYSQL_DATABASE,
-    });
+  beforeAll(() => {
+    connection = createConnection();
+    server = app.listen(3000);
   });
 
-  afterAll(async () => {
-    await connection.end();
+  afterAll(() => {
+    connection.end();
+    server.close();
   });
 
   describe('GET /api/:table', () => {

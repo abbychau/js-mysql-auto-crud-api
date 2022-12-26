@@ -3,18 +3,25 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import jwt from 'jsonwebtoken';
 
-const { MYSQL_HOST, MYSQL_USER, MYSQL_PASSWORD, MYSQL_DATABASE, SERVER_PORT } = process.env;
-
 const app = express();
 const port = SERVER_PORT;
 
-// Replace with your MySQL connection details
-const connection = mysql.createConnection({
-  host: MYSQL_HOST,
-  user: MYSQL_USER,
-  password: MYSQL_PASSWORD,
-  database: MYSQL_DATABASE
-});
+let connection;
+
+if (process.env.NODE_ENV === 'test') {
+  connection = {
+    query: jest.fn(),
+    end: jest.fn(),
+  };
+} else {
+  connection = mysql.createConnection({
+    host: process.env.MYSQL_HOST,
+    user: process.env.MYSQL_USER,
+    password: process.env.MYSQL_PASSWORD,
+    database: process.env.MYSQL_DATABASE,
+  });
+}
+
 
 connection.connect((error) => {
   if (error) {
@@ -338,7 +345,8 @@ app.delete('/api/:table/:id', getColumns, (req, res) => {
   );
 });
 
-app.listen(port, () => {
+app.listen(process.env.PORT, () => {
   console.log(`API server listening on port ${port}`);
 });
 
+export default app;
